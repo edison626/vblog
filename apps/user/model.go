@@ -10,7 +10,8 @@ import (
 )
 
 func NewUser(req *CreateUserRequest) *User {
-	//req.PasswordHash()
+	//调用model里的加密哈希
+	req.PasswordHash()
 
 	return &User{
 		Meta:              common.NewMeta(),
@@ -26,6 +27,7 @@ type User struct {
 	*CreateUserRequest
 }
 
+// 序列化成对象
 func (u *User) String() string {
 	dj, _ := json.Marshal(u)
 	return string(dj)

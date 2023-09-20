@@ -18,7 +18,8 @@ func NewUserServiceImpl() *UserServiceImpl {
 	// db 怎么来?
 	// 通过配置 https://gorm.io/zh_CN/docs/index.html
 	return &UserServiceImpl{
-		db: conf.C().MySQL.GetConn(),
+		//db: conf.C().MySQL.GetConn(),
+		db: conf.C().MySQL.GetConn().Debug(),
 	}
 }
 
@@ -69,8 +70,53 @@ func (i *UserServiceImpl) CreateUser(
 	return ins, nil
 }
 
-// 删除用户
+// 删除用户的请求
 func (i *UserServiceImpl) DeleteUser(
 	context.Context, *user.DeleteUserRequest) error {
 	return nil
 }
+
+// 删除用户
+// func (i *UserServiceImpl) DeleteUser(
+// 	ctx context.Context,
+// 	req *user.DeleteUserRequest) error {
+// 	_, err := i.DescribeUserRequest(ctx,
+// 		user.NewDescribeUserRequestById(req.IdString()))
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	return i.db.
+// 		WithContext(ctx).
+// 		Where("id = ?", req.Id).
+// 		Delete(&user.User{}).
+// 		Error
+// }
+
+// 查询用户
+// func (i *UserServiceImpl) DescribeUserRequest(
+// 	ctx context.Context,
+// 	req *user.DescribeUserRequest) (
+// 	*user.User, error) {
+
+// 	query := i.db.WithContext(ctx)
+
+// 	// 1. 构造我们的查询条件
+// 	// 根据条件来构建Where语句
+// 	// id= ? or username = ?
+// 	switch req.DescribeBy {
+// 	case user.DESCRIBE_BY_ID:
+// 		// 通过返回值来修改原来的对象
+// 		query = query.Where("id = ?", req.DescribeValue)
+// 	case user.DESCRIBE_BY_USERNAME:
+// 		query = query.Where("username = ?", req.DescribeValue)
+// 	}
+
+// 	// SELECT * FROM `users` WHERE username = 'admin' ORDER BY `users`.`id` LIMIT 1
+// 	ins := user.NewUser(user.NewCreateUserRequest())
+// 	if err := query.First(ins).Error; err != nil {
+// 		return nil, err
+// 	}
+
+// 	return ins, nil
+// }

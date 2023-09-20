@@ -27,15 +27,29 @@ func TestCreateUser(t *testing.T) {
 }
 
 // func TestDeleteUser(t *testing.T) {
-// 	err := userSvc.DeleteUser(ctx, &user.DeleteUserRequest{})
+// 	err := userSvc.DeleteUser(ctx, &user.DeleteUserRequest{
+// 		//ID: 8, //删除ID8
+// 	})
 // 	if err != nil {
 // 		t.Fatal(err)
 // 	}
 // }
 
+// 测试查询 - name 查询
 // SELECT * FROM `users` WHERE username = 'admin' ORDER BY `users`.`id` LIMIT 1
 // func TestDescribeUserRequestByName(t *testing.T) {
 // 	req := user.NewDescribeUserRequestByUsername("admin")
+// 	ins, err := userSvc.DescribeUserRequest(ctx, req)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	t.Log(ins)
+// }
+
+// 测试查询 - ID 查询
+// 修改ID 和 mysql 的id 一样
+// func TestDescribeUserRequestById(t *testing.T) {
+// 	req := user.NewDescribeUserRequestById("9")
 // 	ins, err := userSvc.DescribeUserRequest(ctx, req)
 // 	if err != nil {
 // 		t.Fatal(err)

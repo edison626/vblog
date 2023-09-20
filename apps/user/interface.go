@@ -2,8 +2,10 @@ package user
 
 import (
 	"context"
-
+	"encoding/base64"
 	"fmt"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // 定义User包的能力 就是接口定义
@@ -37,7 +39,7 @@ type Service interface {
 // 同时支持通过Id来查询，也要支持通过username来查询
 // type DescribeUserRequest struct {
 // 	DescribeBy    DescribeBy `json:"describe_by"`
-// 	DescribeValue string `json:"describe_value"`
+// 	DescribeValue string     `json:"describe_value"`
 // }
 
 func NewCreateUserRequest() *CreateUserRequest {
@@ -60,9 +62,9 @@ type CreateUserRequest struct {
 	// 对象标签, Dep:部门A
 	// Label 没法存入数据库，不是一个结构化的数据
 	// 比如就存储在数据里面 ，存储为Json, 需要ORM来帮我们完成 json的序列化和存储
-	// 直接序列化为Json存储到 lable字段
+	// 直接序列化为Json存储到 label字段 - https://gorm.io/zh_CN/docs/serializer.html
 	Label map[string]string `json:"label" gorm:"serializer:json"`
-
+	// 判断哈希是否被调用
 	isHashed bool
 }
 
@@ -74,15 +76,16 @@ func (req *CreateUserRequest) Validate() error {
 	return nil
 }
 
-// func (req *CreateUserRequest) PasswordHash() {
-// 	if req.isHashed {
-// 		return
-// 	}
+// salt 加盐加密 - 并通过base24的方式存入mysql
+func (req *CreateUserRequest) PasswordHash() {
+	if req.isHashed {
+		return
+	}
 
-// 	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-// 	req.Password = base64.StdEncoding.EncodeToString(b)
-// 	req.isHashed = true
-// }
+	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	req.Password = base64.StdEncoding.EncodeToString(b)
+	req.isHashed = true
+}
 
 // 删除用户的请求
 type DeleteUserRequest struct {

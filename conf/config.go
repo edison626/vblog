@@ -66,9 +66,9 @@ func (m *MySQL) GetConn() *gorm.DB {
 	m.lock.Lock()
 	defer m.lock.Unlock()
 
+	fmt.Println("mysql 链接成功")
 	// 没有就赋值
-	if m.conn != nil {
-
+	if m.conn == nil {
 		// 在进行m.conn = conn 赋值操作时 由锁存在不会冲突
 		conn, err := gorm.Open(mysql.Open(m.DSN()), &gorm.Config{})
 		if err != nil {
