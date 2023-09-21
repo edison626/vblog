@@ -2,9 +2,11 @@ package user
 
 import (
 	"context"
-	//"encoding/base64"
+	"encoding/base64"
+
 	"fmt"
-	//"golang.org/x/crypto/bcrypt"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // 定义User包的能力 就是接口定义
@@ -19,27 +21,27 @@ type Service interface {
 	DeleteUser(context.Context, *DeleteUserRequest) error
 
 	// 查询用户  User.CheckPassword(xxx)
-	//DescribeUserRequest(context.Context, *DescribeUserRequest) (*User, error)
+	DescribeUserRequest(context.Context, *DescribeUserRequest) (*User, error)
 }
 
-// func NewDescribeUserRequestById(id string) *DescribeUserRequest {
-// 	return &DescribeUserRequest{
-// 		DescribeValue: id,
-// 	}
-// }
+func NewDescribeUserRequestById(id string) *DescribeUserRequest {
+	return &DescribeUserRequest{
+		DescribeValue: id,
+	}
+}
 
-// func NewDescribeUserRequestByUsername(username string) *DescribeUserRequest {
-// 	return &DescribeUserRequest{
-// 		DescribeBy:    DESCRIBE_BY_USERNAME,
-// 		DescribeValue: username,
-// 	}
-// }
+func NewDescribeUserRequestByUsername(username string) *DescribeUserRequest {
+	return &DescribeUserRequest{
+		DescribeBy:    DESCRIBE_BY_USERNAME,
+		DescribeValue: username,
+	}
+}
 
 // 同时支持通过Id来查询，也要支持通过username来查询
-// type DescribeUserRequest struct {
-// 	DescribeBy    DescribeBy `json:"describe_by"`
-// 	DescribeValue string     `json:"describe_value"`
-// }
+type DescribeUserRequest struct {
+	DescribeBy    DescribeBy `json:"describe_by"`
+	DescribeValue string     `json:"describe_value"`
+}
 
 func NewCreateUserRequest() *CreateUserRequest {
 	return &CreateUserRequest{
@@ -64,7 +66,7 @@ type CreateUserRequest struct {
 	// 直接序列化为Json存储到 label字段 - https://gorm.io/zh_CN/docs/serializer.html
 	Label map[string]string `json:"label" gorm:"serializer:json"`
 	// 判断哈希是否被调用
-	//isHashed bool
+	isHashed bool
 }
 
 // 校验用户 - 是否为空
@@ -76,15 +78,15 @@ func (req *CreateUserRequest) Validate() error {
 }
 
 // salt 加盐加密 - 并通过base24的方式存入mysql
-// func (req *CreateUserRequest) PasswordHash() {
-// 	if req.isHashed {
-// 		return
-// 	}
+func (req *CreateUserRequest) PasswordHash() {
+	if req.isHashed {
+		return
+	}
 
-// 	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-// 	req.Password = base64.StdEncoding.EncodeToString(b)
-// 	req.isHashed = true
-// }
+	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	req.Password = base64.StdEncoding.EncodeToString(b)
+	req.isHashed = true
+}
 
 // 删除用户的请求
 type DeleteUserRequest struct {
