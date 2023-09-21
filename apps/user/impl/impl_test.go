@@ -19,11 +19,13 @@ func TestCreateUser(t *testing.T) {
 	req := user.NewCreateUserRequest()
 	req.Username = "admin"
 	req.Password = "123456"
+	t.Log(req)
 	u, err := userSvc.CreateUser(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Log(u)
+
 }
 
 // func TestDeleteUser(t *testing.T) {
@@ -59,6 +61,7 @@ func TestCreateUser(t *testing.T) {
 
 // userSvc 被初始化为 impl.UserServiceImpl 的一个新实例的指针。之后，在其他函数（比如测试函数）中就可以使用这个已经初始化的 userSvc 变量了。
 func init() {
+	//conf.Setup("")
 	test.DevelopmentSetup()
 	userSvc = &impl.UserServiceImpl{}
 }

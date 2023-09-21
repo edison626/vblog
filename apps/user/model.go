@@ -11,7 +11,7 @@ import (
 
 func NewUser(req *CreateUserRequest) *User {
 	//调用model里的加密哈希
-	req.PasswordHash()
+	//req.PasswordHash()
 
 	return &User{
 		Meta:              common.NewMeta(),

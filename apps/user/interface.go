@@ -2,10 +2,9 @@ package user
 
 import (
 	"context"
-	"encoding/base64"
+	//"encoding/base64"
 	"fmt"
-
-	"golang.org/x/crypto/bcrypt"
+	//"golang.org/x/crypto/bcrypt"
 )
 
 // 定义User包的能力 就是接口定义
@@ -65,7 +64,7 @@ type CreateUserRequest struct {
 	// 直接序列化为Json存储到 label字段 - https://gorm.io/zh_CN/docs/serializer.html
 	Label map[string]string `json:"label" gorm:"serializer:json"`
 	// 判断哈希是否被调用
-	isHashed bool
+	//isHashed bool
 }
 
 // 校验用户 - 是否为空
@@ -77,15 +76,15 @@ func (req *CreateUserRequest) Validate() error {
 }
 
 // salt 加盐加密 - 并通过base24的方式存入mysql
-func (req *CreateUserRequest) PasswordHash() {
-	if req.isHashed {
-		return
-	}
+// func (req *CreateUserRequest) PasswordHash() {
+// 	if req.isHashed {
+// 		return
+// 	}
 
-	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	req.Password = base64.StdEncoding.EncodeToString(b)
-	req.isHashed = true
-}
+// 	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+// 	req.Password = base64.StdEncoding.EncodeToString(b)
+// 	req.isHashed = true
+// }
 
 // 删除用户的请求
 type DeleteUserRequest struct {

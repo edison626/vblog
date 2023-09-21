@@ -18,8 +18,7 @@ func NewUserServiceImpl() *UserServiceImpl {
 	// db 怎么来?
 	// 通过配置 https://gorm.io/zh_CN/docs/index.html
 	return &UserServiceImpl{
-		//db: conf.C().MySQL.GetConn(),
-		db: conf.C().MySQL.GetConn().Debug(),
+		db: conf.C().MySQL.GetConn(),
 	}
 }
 
@@ -59,12 +58,13 @@ func (i *UserServiceImpl) CreateUser(
 	//  12345 ---> xxxx, 123456 ---> yyyy 123456 ---> zzzz
 	//  123456 ---> salt.123456 ---> salt.xxxxxxx (结果)
 	//  123456(req) ---> salt.123456   ----> salt.xxxxxx
-	// if err := i.db.
-	// 	WithContext(ctx).
-	// 	Create(ins).
-	// 	Error; err != nil {
-	// 	return nil, err
-	// }
+
+	if err := i.db.
+		WithContext(ctx).
+		Create(ins).
+		Error; err != nil {
+		return nil, err
+	}
 
 	// 4. 返回结果
 	return ins, nil
@@ -93,7 +93,7 @@ func (i *UserServiceImpl) DeleteUser(
 // 		Error
 // }
 
-// 查询用户
+// // 查询用户
 // func (i *UserServiceImpl) DescribeUserRequest(
 // 	ctx context.Context,
 // 	req *user.DescribeUserRequest) (
