@@ -1,7 +1,7 @@
 package conf
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"fmt"
 	"sync"
 
@@ -26,11 +26,11 @@ type Config struct {
 	MySQL *MySQL `json:"mysql" toml:"mysql"`
 }
 
-//返回显示正常内容
-// func (c *Config) String() string {
-// 	dj, _ := json.Marshal(c)
-// 	return string(dj)
-// }
+// 返回显示正常内容
+func (c *Config) String() string {
+	dj, _ := json.Marshal(c)
+	return string(dj)
+}
 
 // [mysql]
 // host="localhost"
@@ -77,6 +77,5 @@ func (m *MySQL) GetConn() *gorm.DB {
 		}
 		m.conn = conn
 	}
-
 	return m.conn
 }

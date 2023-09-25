@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"encoding/base64"
 
 	"fmt"
 
@@ -69,6 +68,10 @@ type CreateUserRequest struct {
 	isHashed bool
 }
 
+func (req *CreateUserRequest) SetIsHashed() {
+	req.isHashed = true
+}
+
 // 校验用户 - 是否为空
 func (req *CreateUserRequest) Validate() error {
 	if req.Username == "" || req.Password == "" {
@@ -84,7 +87,7 @@ func (req *CreateUserRequest) PasswordHash() {
 	}
 
 	b, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	req.Password = base64.StdEncoding.EncodeToString(b)
+	req.Password = string(b)
 	req.isHashed = true
 }
 

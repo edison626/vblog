@@ -6,6 +6,7 @@ import (
 
 	"github.com/edison626/vblog/apps/user"
 	"github.com/edison626/vblog/apps/user/impl"
+	"github.com/edison626/vblog/exception"
 	"github.com/edison626/vblog/test"
 )
 
@@ -17,7 +18,7 @@ var (
 
 func TestCreateUser(t *testing.T) {
 	req := user.NewCreateUserRequest()
-	req.Username = "admin"
+	req.Username = "admin2"
 	req.Password = "123456"
 	u, err := userSvc.CreateUser(ctx, req)
 	if err != nil {
@@ -28,9 +29,14 @@ func TestCreateUser(t *testing.T) {
 
 func TestDeleteUser(t *testing.T) {
 	err := userSvc.DeleteUser(ctx, &user.DeleteUserRequest{
-		Id: 5, //删除ID8
+		Id: 18, //删除ID8
 	})
+	//自定义包装，调用 exception
 	if err != nil {
+		//使用断言的方式
+		if v, ok := err.(*exception.ApiException); ok {
+			t.Fatal("自定义 - error code", v.Code)
+		}
 		t.Fatal(err)
 	}
 }

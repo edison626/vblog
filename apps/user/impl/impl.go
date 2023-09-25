@@ -5,6 +5,7 @@ import (
 
 	"github.com/edison626/vblog/apps/user"
 	"github.com/edison626/vblog/conf"
+	"github.com/edison626/vblog/exception"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,7 @@ func NewUserServiceImpl() *UserServiceImpl {
 	// db 怎么来?
 	// 通过配置 https://gorm.io/zh_CN/docs/index.html
 	return &UserServiceImpl{
-		db: conf.C().MySQL.GetConn(),
+		db: conf.C().MySQL.GetConn().Debug(),
 	}
 }
 
@@ -109,8 +110,16 @@ func (i *UserServiceImpl) DescribeUserRequest(
 	// SELECT * FROM `users` WHERE username = 'admin' ORDER BY `users`.`id` LIMIT 1
 	ins := user.NewUser(user.NewCreateUserRequest())
 	if err := query.First(ins).Error; err != nil {
+		//调用自己的exception ,自定义显示信息
+		//展示的报错会更新的友好, 如显示 5 用户not found
+		if err == gorm.ErrRecordNotFound {
+			return nil, exception.NewNotFound("user %s not found", req.DescribeValue)
+		}
 		return nil, err
 	}
+
+	// 数据库里面存储的就是Hash
+	ins.SetIsHashed()
 
 	return ins, nil
 }
