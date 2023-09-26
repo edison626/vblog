@@ -15,6 +15,7 @@ var (
 	ctx      = context.Background()
 )
 
+// 测试登陆后，会颁发token存到数据库
 func TestLogin(t *testing.T) {
 	req := token.NewLoginRequest()
 	req.Username = "admin2"
@@ -26,8 +27,10 @@ func TestLogin(t *testing.T) {
 	t.Log(tk)
 }
 
+// 测试token 对应是否正确
 func TestValiateToken(t *testing.T) {
-	req := token.NewValiateToken("ck2m1hlmjd0jbb0g3ip0")
+	//复制mysql access toke 做测试
+	req := token.NewValiateToken("ck957fof79qj20cirf801")
 	tk, err := tokenSvc.ValiateToken(ctx, req)
 	if err != nil {
 		t.Fatal(err)

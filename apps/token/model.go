@@ -22,7 +22,7 @@ func NewToken() *Token {
 type Token struct {
 	// 该Token是颁发
 	UserId int64 `json:"user_id"`
-	// 人的名称， user_name
+	// 人的名称，- 名显示是 user_name ， 需要gorm 标签和数据一样 username
 	UserName string `json:"username" gorm:"column:username"`
 	// 办法给用户的访问令牌(用户需要携带Token来访问接口)
 	AccessToken string `json:"access_token"`
@@ -44,6 +44,7 @@ func (t *Token) TableName() string {
 }
 
 func (t *Token) IsExpired() error {
+	//duration 是个减法
 	duration := time.Since(t.ExpiredTime())
 	expiredSeconds := duration.Seconds()
 	if expiredSeconds > 0 {

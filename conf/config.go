@@ -18,18 +18,11 @@ func DefaultConfig() *Config {
 			Username: "vblog",
 			Password: "123456",
 		},
+		App: &App{
+			HttpHost: "127.0.0.1",
+			HttpPort: 7080,
+		},
 	}
-}
-
-// 这个对象维护整个程序配置
-type Config struct {
-	MySQL *MySQL `json:"mysql" toml:"mysql"`
-}
-
-// 返回显示正常内容
-func (c *Config) String() string {
-	dj, _ := json.Marshal(c)
-	return string(dj)
 }
 
 // [mysql]
@@ -48,6 +41,28 @@ type MySQL struct {
 	// 缓存一个对象
 	lock sync.Mutex
 	conn *gorm.DB
+}
+
+// 这个对象维护整个程序配置
+type Config struct {
+	MySQL *MySQL `json:"mysql" toml:"mysql"`
+	App   *App   `json:"app" toml:"app"`
+}
+
+// 返回显示正常内容
+func (c *Config) String() string {
+	dj, _ := json.Marshal(c)
+	return string(dj)
+}
+
+// 被main APP 调用
+type App struct {
+	HttpHost string `json:"http_host" env:"HTTP_HOST"`
+	HttpPort int64  `json:"http_port" env:"HTTP_PORT"`
+}
+
+func (a *App) HttpAddr() string {
+	return fmt.Sprintf("%s:%d", a.HttpHost, a.HttpPort)
 }
 
 // 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
