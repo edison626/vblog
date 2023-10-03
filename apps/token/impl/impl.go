@@ -61,6 +61,7 @@ func (i *TokenServiceImpl) Login(
 		Error; err != nil {
 		return nil, err
 	}
+
 	// 避免同一个用户多次登录
 	// 4. 颁发成功后  把之前的Token标记为失效,作业
 	return tk, nil

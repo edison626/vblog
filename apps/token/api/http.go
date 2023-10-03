@@ -1,9 +1,8 @@
 package api
 
 import (
-	"net/http"
-
 	"github.com/edison626/vblog/apps/token"
+	"github.com/edison626/vblog/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,7 +43,8 @@ func (h *TokenApiHandler) Login(c *gin.Context) {
 	err := c.BindJSON(req)
 	if err != nil {
 		//http 的状态码 - 可以cmd 进入看其他类型
-		c.JSON(http.StatusBadRequest, err.Error())
+		response.Failed(c, err)
+		//c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -52,12 +52,14 @@ func (h *TokenApiHandler) Login(c *gin.Context) {
 	// 把http 协议的请求 ---> 控制器的请求
 	ins, err := h.svc.Login(c.Request.Context(), req)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		response.Failed(c, err)
+		//c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// 3. 返回响应
-	c.JSON(http.StatusOK, ins)
+	//c.JSON(http.StatusOK, ins)
+	response.Success(c, ins)
 }
 
 // Logout HandleFunc

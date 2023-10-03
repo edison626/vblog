@@ -35,7 +35,7 @@ func TestDeleteUser(t *testing.T) {
 	if err != nil {
 		//使用断言的方式
 		if v, ok := err.(*exception.ApiException); ok {
-			t.Fatal("自定义 - error code", v.Code)
+			t.Fatal("自定义 - error code", v.BizCode)
 		}
 		t.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func TestDescribeUserRequestByName(t *testing.T) {
 // 测试查询 - ID 查询
 // 修改ID 和 mysql 的id 一样
 func TestDescribeUserRequestById(t *testing.T) {
-	req := user.NewDescribeUserRequestById("5")
+	req := user.NewDescribeUserRequestById("19")
 	ins, err := userSvc.DescribeUserRequest(ctx, req)
 	if err != nil {
 		t.Fatal(err)

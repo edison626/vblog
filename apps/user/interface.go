@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-
 	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
@@ -18,7 +17,6 @@ type Service interface {
 	CreateUser(context.Context, *CreateUserRequest) (*User, error)
 	// 删除用户
 	DeleteUser(context.Context, *DeleteUserRequest) error
-
 	// 查询用户  User.CheckPassword(xxx)
 	DescribeUserRequest(context.Context, *DescribeUserRequest) (*User, error)
 }

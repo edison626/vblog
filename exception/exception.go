@@ -1,19 +1,26 @@
 package exception
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 // New(5000, "令牌过期...")
 func New(code int, format string, a ...any) *ApiException {
 	return &ApiException{
-		Code:    code,
-		Message: fmt.Sprintf(format, a...),
+		BizCode:  code,
+		Message:  fmt.Sprintf(format, a...),
+		HttpCode: http.StatusOK,
 	}
 }
 
 // 业务自定义异常
 type ApiException struct {
-	Code    int    `json:"code"`    //报错代码 如 404
-	Message string `json:"message"` //报错信息
+	//业务异常
+	BizCode  int    `json:"code"`    //报错代码 如 404
+	Message  string `json:"message"` //报错信息
+	Data     any    `json:"data"`
+	HttpCode int    `json:"http_code"`
 }
 
 // 实现Error接口

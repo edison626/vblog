@@ -30,7 +30,7 @@ func TestLogin(t *testing.T) {
 // 测试token 对应是否正确
 func TestValiateToken(t *testing.T) {
 	//复制mysql access toke 做测试
-	req := token.NewValiateToken("ck957fof79qj20cirf801")
+	req := token.NewValiateToken("ck957fof79qj20cirf80")
 	tk, err := tokenSvc.ValiateToken(ctx, req)
 	if err != nil {
 		t.Fatal(err)
