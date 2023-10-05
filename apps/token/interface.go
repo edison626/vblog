@@ -2,6 +2,11 @@ package token
 
 import "context"
 
+// ioc 为这模块定义个名
+const (
+	AppName = "token"
+)
+
 type Service interface {
 	// 登录接口(颁发Token)
 	Login(context.Context, *LoginRequest) (*Token, error)

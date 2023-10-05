@@ -5,13 +5,13 @@ import (
 	"testing"
 
 	"github.com/edison626/vblog/apps/token"
-	"github.com/edison626/vblog/apps/token/impl"
-	userImpl "github.com/edison626/vblog/apps/user/impl"
+	"github.com/edison626/vblog/ioc"
 	"github.com/edison626/vblog/test"
 )
 
 var (
-	tokenSvc *impl.TokenServiceImpl
+	//要测试的是token service
+	tokenSvc token.Service
 	ctx      = context.Background()
 )
 
@@ -42,5 +42,5 @@ func init() {
 	test.DevelopmentSetup()
 
 	// 依赖另一个实现类
-	tokenSvc = impl.NewTokenServiceImpl(userImpl.NewUserServiceImpl())
+	tokenSvc = ioc.Controller().Get(token.AppName).(token.Service)
 }

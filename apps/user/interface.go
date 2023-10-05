@@ -7,6 +7,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const(
+	AppName = "user"
+)
+
+
 // 定义User包的能力 就是接口定义
 // 站在使用放的角度来定义的   userSvc.Create(ctx, req), userSvc.DeleteUser(id)
 // 接口定义好了，不要试图 随意修改接口， 要保证接口的兼容性

@@ -7,17 +7,22 @@ import (
 	"github.com/edison626/vblog/apps/user"
 	"github.com/edison626/vblog/conf"
 	"github.com/edison626/vblog/exception"
+	"github.com/edison626/vblog/ioc"
 	"gorm.io/gorm"
 )
 
 // 传递用户接口的实例
-func NewTokenServiceImpl(userSvcImpl user.Service) *TokenServiceImpl {
+func NewTokenServiceImpl() *TokenServiceImpl {
 	return &TokenServiceImpl{
 		//初始化db
 		db: conf.C().MySQL.GetConn().Debug(),
 		//传user 服务实现
-		user: userSvcImpl,
+		user: ioc.Controller().Get(user.AppName).(user.Service),
 	}
+}
+
+func init() {
+	ioc.Controller().Registry(&TokenServiceImpl{})
 }
 
 type TokenServiceImpl struct {
@@ -26,6 +31,18 @@ type TokenServiceImpl struct {
 	// 依赖User模块, 直接操作user模块的数据库(users)?
 	// 这里需要依赖另一个业务领域: 用户管理领域
 	user user.Service
+}
+
+func (i *TokenServiceImpl) Init() error {
+	//初始化db
+	i.db = conf.C().MySQL.GetConn().Debug()
+	//传user 服务实现
+	i.user = ioc.Controller().Get(user.AppName).(user.Service)
+	return nil
+}
+
+func (i *TokenServiceImpl) Name() string {
+	return token.AppName
 }
 
 // 登录接口(颁发Token)

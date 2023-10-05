@@ -5,14 +5,14 @@ import (
 	"testing"
 
 	"github.com/edison626/vblog/apps/user"
-	"github.com/edison626/vblog/apps/user/impl"
 	"github.com/edison626/vblog/exception"
+	"github.com/edison626/vblog/ioc"
 	"github.com/edison626/vblog/test"
 )
 
 // 测试环境 - 全局变量
 var (
-	userSvc *impl.UserServiceImpl
+	userSvc user.Service
 	ctx     = context.Background()
 )
 
@@ -66,7 +66,9 @@ func TestDescribeUserRequestById(t *testing.T) {
 // userSvc 被初始化为 impl.UserServiceImpl 的一个新实例的指针。之后，在其他函数（比如测试函数）中就可以使用这个已经初始化的 userSvc 变量了。
 func init() {
 	test.DevelopmentSetup()
-	//userSvc = &impl.UserServiceImpl{}
-	//测试环境链接数据库用
-	userSvc = impl.NewUserServiceImpl()
+
+	//取消的对象 ioc.Controller().Get(user.AppName)
+	//断言为接口来使用（只使用对象接口提供出来的能力）
+	userSvc = ioc.Controller().Get(user.AppName).(user.Service)
+
 }

@@ -6,8 +6,26 @@ import (
 	"github.com/edison626/vblog/apps/user"
 	"github.com/edison626/vblog/conf"
 	"github.com/edison626/vblog/exception"
+	"github.com/edison626/vblog/ioc"
 	"gorm.io/gorm"
 )
+
+// 倒入这个包的时候，指教吧这个对象 UserServiceImpl 注册给ioc
+// 注册User业务模块（业务模块的名称是User.APPNAME）的控制器
+// User Service的具体实现 &UserServiceImpl（） 注入
+// 可以随时更换业务的具体实现
+
+// 对象初始化？删除？
+//
+//	&UserServiceImpl{
+//		db: conf.C().MySQL.GetConn().Debug(),
+//	}
+//
+// 提出来放到初始化里面
+func init() {
+	//ioc.Controller().Registry(&UserServiceImpl{})
+	ioc.Controller().Registry(&UserServiceImpl{})
+}
 
 // 检查 &UserServiceImpl{} 是否实现了 user.Service 接口
 // 显示声明接口实现的语言 都可以 明确约束接口的实现
@@ -15,12 +33,15 @@ var _ user.Service = &UserServiceImpl{}
 
 // var _ user.Service = (*UserServiceImpl)(nil)
 
-func NewUserServiceImpl() *UserServiceImpl {
-	// db 怎么来?
-	// 通过配置 https://gorm.io/zh_CN/docs/index.html
-	return &UserServiceImpl{
-		db: conf.C().MySQL.GetConn().Debug(),
-	}
+// 定义对象的初始化
+func (i *UserServiceImpl) Init() error {
+	i.db = conf.C().MySQL.GetConn().Debug()
+	return nil
+}
+
+// 定义托管到Ioc里面模块名称
+func (i *UserServiceImpl) Name() string {
+	return user.AppName
 }
 
 type UserServiceImpl struct {
