@@ -7,12 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewTokenApiHandler() *TokenApiHandler {
-	return &TokenApiHandler{
-		svc: ioc.Controller().Get(token.AppName).(token.Service),
-	}
-}
-
 // 不适用接口, 直接定义Gin的一个handlers
 // 什么是Gin的Handler  HandlerFunc
 // HandlerFunc defines the handler used by gin middleware as return value.
@@ -31,6 +25,12 @@ func (h *TokenApiHandler) Registry(r gin.IRouter) {
 	v1 := r.Group("v1")
 	v1.POST("/tokens/", h.Login)
 	v1.DELETE("/tokens/", h.Logout)
+}
+
+func NewTokenApiHandler() *TokenApiHandler {
+	return &TokenApiHandler{
+		svc: ioc.Controller().Get(token.AppName).(token.Service),
+	}
 }
 
 // Login HandleFunc

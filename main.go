@@ -10,8 +10,7 @@ import (
 
 	//注册对象
 	_ "github.com/edison626/vblog/apps"
-
-	tokenApiHandler "github.com/edison626/vblog/apps/token/api"
+	//tokenApiHandler "github.com/edison626/vblog/apps/token/api"
 )
 
 func main() {
@@ -35,12 +34,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	// 2.3 token api handler
-	tkApiHandler := tokenApiHandler.NewTokenApiHandler()
+	// 初始化Api Handler
+	if err := ioc.ApiHandler().Init(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	//3. 启动http协议服务器, 注册 handler路由
 	r := gin.Default()
-	tkApiHandler.Registry(r.Group("/api/vblog"))
+	ioc.ApiHandler().RouteRegistry(r.Group("/api/vblog"))
 
 	// 启动协议服务器
 	addr := conf.C().App.HttpAddr() //在config 配置 app

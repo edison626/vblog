@@ -1,14 +1,6 @@
 package ioc
 
-// 专门用于注册Controller 对象
-func Controller() *IocContainter {
-	return controllerContainer
-}
-
-// ioc 注册表对象，全局只有
-var controllerContainer = &IocContainter{
-	store: map[string]IocObject{},
-}
+import "github.com/gin-gonic/gin"
 
 // 定义逻辑 - 一个对象的注册表
 type IocContainter struct {
@@ -35,4 +27,21 @@ func (c *IocContainter) Registry(obj IocObject) {
 // 获取
 func (c *IocContainter) Get(name string) any {
 	return c.store[name]
+}
+
+// Gin
+type GinApiHandler interface {
+	Registry(r gin.IRouter)
+}
+
+// 管理者所有的对象(Api Handler)
+// 把每个 ApiHandler的路由注册给Root Router
+func (c *IocContainter) RouteRegistry(r gin.IRouter) {
+	// 找到被托管的APIHandler
+	for _, obj := range c.store {
+		// 怎么来判断这个对象是一个APIHandler对象
+		if api, ok := obj.(GinApiHandler); ok {
+			api.Registry(r)
+		}
+	}
 }
