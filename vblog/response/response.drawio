@@ -1,0 +1,37 @@
+<mxfile host="65bd71144e">
+    <diagram id="iT83vDOvEC89TCMKxj0T" name="第 1 页">
+        <mxGraphModel dx="991" dy="614" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="3">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="web" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="180" width="510" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="blog" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="380" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="user" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="380" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="..." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="380" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="response:&amp;nbsp; 统一返回的数据格式" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="310" width="510" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;h1&gt;数据格式返回的定义&lt;/h1&gt;&lt;p&gt;1. 200 （ok)&amp;nbsp; api有数据返回&lt;/p&gt;&lt;p&gt;{code: 0, message: '', data: []/{}}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;2. http code 沿用http code规范(!200)&lt;/p&gt;&lt;p&gt;正常请求的API数据返回: 200&lt;/p&gt;&lt;p&gt;[]/{}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;异常情况的API数据返回: !200&lt;/p&gt;&lt;p&gt;{code:0, message:&quot;&quot;, data:[]}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="567" y="170" width="260" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="ok" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="540" y="530" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="error" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="530" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
