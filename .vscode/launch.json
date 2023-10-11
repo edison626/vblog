@@ -11,7 +11,7 @@
             "mode": "auto",
             // 运行你程序的命令: go run main.go
             // program 你需要配置的入口文件的位置
-            "program": "${workspaceFolder}/skills/main.go"
+            "program": "${workspaceFolder}/main.go"
         }
     ]
 }
