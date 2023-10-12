@@ -1,6 +1,8 @@
 package blog
 
-import "context"
+import (
+	"context"
+)
 
 const (
 	AppName = "blogs"
@@ -10,14 +12,26 @@ const (
 type Service interface {
 	//创建博客
 	CreateBlog(context.Context, *CreateBlogRequest) (*Blog, error)
+	// 查询文章的列表,列表查询，没有必要查询文章具体内容
+	QueryBlog(context.Context, *QueryBlogRequest) (*BlogSet, error)
+	// 详情页面，尽量把相关的数据查询出来，content
+	DescribeBlog(context.Context, *DescribeBlogRequest) (*Blog, error)
 	//修改文章状态
 	UpdateBlogStatus(context.Context, *UpdateBlogStatusRequest) (*Blog, error)
 	//更新文章
 	UpdateBlog(context.Context, *UpdateBlogRequest) (*Blog, error)
 	//删除文章
 	DeleteBlog(context.Context, *DeleteBlogRequest) error
-	// 查询文章的列表
-	QueryBlog(context.Context, *QueryBlogRequest) (*BlogSet, error)
+}
+
+func NewDescribeBlogRequest(id string) *DescribeBlogRequest {
+	return &DescribeBlogRequest{
+		BlogId: id,
+	}
+}
+
+type DescribeBlogRequest struct {
+	BlogId string `json:"blogid"`
 }
 
 func NewBlogSet() *BlogSet {
@@ -80,17 +94,31 @@ type UpdateBlogStatusRequest struct {
 	Status Status `json:"status"`
 }
 
+func NewPutUpdateBlogRequest(id string) *UpdateBlogRequest {
+	return &UpdateBlogRequest{
+		BlogId:            id,
+		UpdateMode:        UPDATE_MODE_PUT,
+		CreateBlogRequest: NewCreateBlogRequest(),
+	}
+}
+
 // 区分全量更新/部分更新
 type UpdateBlogRequest struct {
 	//如果定义一遍文章，使用对象Id，具体的某一篇文章
-	BlogId int64 `json:"blog_id"`
+	BlogId string `json:"blog_id"`
 	// 更新方式- 全量更新/部分更新
-	UpdateMode string `json:"update_mode"`
+	UpdateMode UpdateMode `json:"update_mode"`
 	// 用户更新请求，用户只传了一个标签
 	*CreateBlogRequest
 }
 
+func NewDeleteBlogRequest(id string) *DeleteBlogRequest {
+	return &DeleteBlogRequest{
+		BlogId: id,
+	}
+}
+
 type DeleteBlogRequest struct {
 	//如果定义一遍文章，使用对象Id，具体的某一篇文章
-	BlogId int64 `json:"blog_id"`
+	BlogId string `json:"blog_id"`
 }

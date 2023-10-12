@@ -3,7 +3,10 @@ package impl
 import (
 	"context"
 	"errors"
+	"fmt"
+	"time"
 
+	"dario.cat/mergo"
 	"github.com/edison626/vblog/apps/blog"
 )
 
@@ -21,26 +24,6 @@ func (i *blogServiceImpl) CreateBlog(
 		return nil, err
 	}
 	return ins, nil
-}
-
-// 更新文章
-func (i *blogServiceImpl) UpdateBlog(
-	ctx context.Context, in *blog.UpdateBlogRequest) (
-	*blog.Blog, error) {
-	return nil, nil
-}
-
-// 修改文章状态
-func (i *blogServiceImpl) UpdateBlogStatus(
-	ctx context.Context, in *blog.UpdateBlogStatusRequest) (
-	*blog.Blog, error) {
-	return nil, nil
-}
-
-// 删除文章
-func (i *blogServiceImpl) DeleteBlog(
-	ctx context.Context, in *blog.DeleteBlogRequest) error {
-	return nil
 }
 
 func (i *blogServiceImpl) QueryBlog(
@@ -73,4 +56,86 @@ func (i *blogServiceImpl) QueryBlog(
 	}
 
 	return set, nil
+}
+
+// 详情页面，尽量把相关的数据查询出来，content
+func (i *blogServiceImpl) DescribeBlog(
+	ctx context.Context, in *blog.DescribeBlogRequest) (
+	*blog.Blog, error) {
+
+	query := i.db.WithContext(ctx).Model(&blog.Blog{})
+	ins := blog.NewBlog(blog.NewCreateBlogRequest())
+
+	err := query.Where("id = ?", in.BlogId).First(ins).Error
+	if err != nil {
+		return nil, err
+	}
+	return ins, nil
+
+}
+
+// 更新文章
+func (i *blogServiceImpl) UpdateBlog(
+	ctx context.Context, in *blog.UpdateBlogRequest) (
+	*blog.Blog, error) {
+
+	//查询更新对象
+	ins, err := i.DescribeBlog(ctx, blog.NewDescribeBlogRequest(in.BlogId))
+	if err != nil {
+		return nil, err
+	}
+
+	//
+	switch in.UpdateMode {
+	case blog.UPDATE_MODE_PUT:
+		//全量更新
+		ins.CreateBlogRequest = in.CreateBlogRequest
+	case blog.UPDATE_MODE_PATCH:
+		//增量更新
+		// if in.Author != "" {
+		// 	ins.Author = in.Author
+		// }
+		// if in.Content != "" {
+		// 	ins.Content = in.Content
+		// }
+
+		//有没有工具来帮我们完成2个结构题的merge
+		err := mergo.Merge(
+			ins.CreateBlogRequest,
+			in.CreateBlogRequest,
+			mergo.WithOverride)
+		if err != nil {
+			return nil, err
+		}
+
+	default:
+		return nil, fmt.Errorf("unknown update mode: %d", in.UpdateMode)
+	}
+
+	//更新数据
+	//更新的sql 命令 - UPDATE `blogs` SET `created_at`=1697010768,`updated_at`=1697094685,`status`='1',`title`='Vblog Web Service Api23',`tags`='{"分类":"Golang3"}' WHERE id = '45' AND `id` = 45
+	ins.UpdatedAt = time.Now().Unix()
+	err = i.db.WithContext(ctx).Where("id = ?", in.BlogId).Updates(ins).Error
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
+// 删除文章
+func (i *blogServiceImpl) DeleteBlog(
+	ctx context.Context, in *blog.DeleteBlogRequest) error {
+	//执行sql 命令 - DELETE FROM `blogs` WHERE id = '45'
+	return i.db.WithContext(ctx).
+		Model(&blog.Blog{}).
+		Where("id = ?", in.BlogId).
+		Delete(&blog.Blog{}).
+		Error
+}
+
+// 修改文章状态
+func (i *blogServiceImpl) UpdateBlogStatus(
+	ctx context.Context, in *blog.UpdateBlogStatusRequest) (
+	*blog.Blog, error) {
+	return nil, nil
 }

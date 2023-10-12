@@ -37,6 +37,7 @@ require (
 )
 
 require (
+	dario.cat/mergo v1.0.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
