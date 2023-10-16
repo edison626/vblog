@@ -115,11 +115,31 @@ func (i *blogServiceImpl) UpdateBlog(
 	//更新数据
 	//更新的sql 命令 - UPDATE `blogs` SET `created_at`=1697010768,`updated_at`=1697094685,`status`='1',`title`='Vblog Web Service Api23',`tags`='{"分类":"Golang3"}' WHERE id = '45' AND `id` = 45
 	ins.UpdatedAt = time.Now().Unix()
-	err = i.db.WithContext(ctx).Where("id = ?", in.BlogId).Updates(ins).Error
+	//err = i.db.WithContext(ctx).Where("id = ?", in.BlogId).Updates(ins).Error
+	err = i.update(ctx, in.Scope, ins)
 	if err != nil {
 		return nil, err
 	}
 	return nil, nil
+}
+
+// 文章审核, 审核通过的文章才能被看到
+func (i *blogServiceImpl) AuditBlog(
+	ctx context.Context, in *blog.AuditBlogRequest) (
+	*blog.Blog, error) {
+	// 查询需要更新的对象
+	ins, err := i.DescribeBlog(ctx, blog.NewDescribeBlogRequest(in.BlogId))
+	if err != nil {
+		return nil, err
+	}
+
+	ins.IsAuditPass = in.IsAuditPass
+	ins.AuditAt = time.Now().Unix()
+	err = i.update(ctx, nil, ins)
+	if err != nil {
+		return nil, err
+	}
+	return ins, err
 }
 
 // 删除文章

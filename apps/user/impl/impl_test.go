@@ -27,6 +27,18 @@ func TestCreateUser(t *testing.T) {
 	t.Log(u)
 }
 
+func TestCreateAuditorUser(t *testing.T) {
+	req := user.NewCreateUserRequest()
+	req.Username = "auditor"
+	req.Password = "123456"
+	req.Role = user.ROLE_AUDITOR
+	u, err := userSvc.CreateUser(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(u)
+}
+
 func TestDeleteUser(t *testing.T) {
 	err := userSvc.DeleteUser(ctx, &user.DeleteUserRequest{
 		Id: 18, //删除ID8

@@ -73,6 +73,9 @@ func (h *TokenApiHandler) Login(c *gin.Context) {
 		return
 	}
 
+	// access_token 通过SetCookie 直接写到浏览器客户端(Web)
+	c.SetCookie(token.TOKEN_COOKIE_NAME, ins.AccessToken, 0, "/", "localhost", false, true)
+
 	// 3. 返回响应
 	//c.JSON(http.StatusOK, ins)
 	response.Success(c, ins)

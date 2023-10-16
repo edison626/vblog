@@ -2,6 +2,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/edison626/vblog/apps/token"
 	"github.com/edison626/vblog/apps/user"
@@ -106,6 +107,14 @@ func (i *TokenServiceImpl) ValiateToken(
 	if err := tk.IsExpired(); err != nil {
 		return nil, err
 	}
+
+	// 补充用户信息, 只补充了用户的角色
+	uDesc := user.NewDescribeUserRequestById(fmt.Sprintf("%d", tk.UserId))
+	u, err := i.user.DescribeUserRequest(ctx, uDesc)
+	if err != nil {
+		return nil, err
+	}
+	tk.Role = u.Role
 
 	return tk, nil
 }

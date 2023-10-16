@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/edison626/vblog/apps/user"
 	"github.com/edison626/vblog/exception"
 	"github.com/rs/xid"
 )
@@ -37,6 +38,8 @@ type Token struct {
 	CreatedAt int64 `json:"created_at"`
 	// 更新实现
 	UpdatedAt int64 `json:"updated_at"`
+	// 额外补充信息, gorm忽略处理
+	Role user.Role `gorm:"-"`
 }
 
 func (t *Token) TableName() string {

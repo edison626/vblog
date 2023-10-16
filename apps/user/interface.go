@@ -7,10 +7,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const(
+const (
 	AppName = "user"
 )
-
 
 // 定义User包的能力 就是接口定义
 // 站在使用放的角度来定义的   userSvc.Create(ctx, req), userSvc.DeleteUser(id)
@@ -47,7 +46,7 @@ type DescribeUserRequest struct {
 
 func NewCreateUserRequest() *CreateUserRequest {
 	return &CreateUserRequest{
-		Role:  ROLE_MEMBER,
+		Role:  ROLE_AUDITOR,
 		Label: map[string]string{},
 	}
 }

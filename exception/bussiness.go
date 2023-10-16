@@ -20,6 +20,10 @@ func NewAuthFailed(format string, a ...any) *ApiException {
 	return New(5000, format, a...)
 }
 
+func NewPermissionDeny(format string, a ...any) *ApiException {
+	return New(5100, format, a...)
+}
+
 func NewTokenExpired(format string, a ...any) *ApiException {
 	return New(5001, format, a...)
 }

@@ -4,9 +4,11 @@ package user
 type Role int
 
 const (
-	// 普通用户
-	ROLE_MEMBER Role = iota
-	// 管理员
+	// 创建者，负责写博客的
+	ROLE_AUTHOR Role = iota
+	// 审核人员
+	ROLE_AUDITOR
+	//管理员
 	ROLE_ADMIN
 )
 

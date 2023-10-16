@@ -4,9 +4,11 @@ package apps
 
 import (
 	//倒入包就是先后顺序 就对注册的先后顺序
+	_ "github.com/edison626/vblog/apps/blog/impl"
 	_ "github.com/edison626/vblog/apps/token/impl"
 	_ "github.com/edison626/vblog/apps/user/impl"
 
 	// Api Handler注册
+	_ "github.com/edison626/vblog/apps/blog/api"
 	_ "github.com/edison626/vblog/apps/token/api"
 )

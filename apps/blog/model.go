@@ -17,6 +17,8 @@ type CreateBlogRequest struct {
 	Title string `json:"title"`
 	//作者
 	Author string `json:"author"`
+	// 用户登陆后，我们通过Token 知道是哪个用户
+	CreateBy string `json:"create_by"`
 	//文章内容
 	Content string `json:"content"`
 	//概要
@@ -37,8 +39,7 @@ func NewBlog(req *CreateBlogRequest) *Blog {
 type Blog struct {
 	//文章的唯一标识符，给程序使用
 	Id int64 `json:"id"`
-	// 用户登陆后，我们通过Token 知道是哪个用户
-	CreateBy string `json:"create_by"`
+
 	//创建时间
 	CreatedAt int64 `json:"created_at"`
 	//更新时间
@@ -47,6 +48,10 @@ type Blog struct {
 	PublishedAt int64 `json:"published_at"`
 	// 文章的状态
 	Status Status `json:"status" `
+	// 审核时间
+	AuditAt int64 `json:"audit_at"`
+	//是否审核成功
+	IsAuditPass bool `json:"is_audit_pass"`
 	//用户创建博客参数
 	*CreateBlogRequest
 }

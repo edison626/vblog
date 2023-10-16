@@ -17,6 +17,9 @@ func Success(c *gin.Context, data any) {
 // 异常情况的数据返回， 返回我们的业务Exception
 func Failed(c *gin.Context, err error) {
 
+	//如果出现多个Handler,需要通过手动abord
+	defer c.Abort()
+
 	//声明
 	var e *exception.ApiException
 

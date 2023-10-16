@@ -2,6 +2,9 @@ package blog
 
 import (
 	"context"
+	"strconv"
+
+	"github.com/edison626/vblog/common"
 )
 
 const (
@@ -22,6 +25,22 @@ type Service interface {
 	UpdateBlog(context.Context, *UpdateBlogRequest) (*Blog, error)
 	//删除文章
 	DeleteBlog(context.Context, *DeleteBlogRequest) error
+	// 文章审核
+	AuditBlog(context.Context, *AuditBlogRequest) (*Blog, error)
+}
+
+// 构造函数
+func NewAuditBlogRequest(id string) *AuditBlogRequest {
+	return &AuditBlogRequest{
+		BlogId: id,
+	}
+}
+
+type AuditBlogRequest struct {
+	// 审核的文章
+	BlogId string `json:"blog_id"`
+	// 是否审核成功
+	IsAuditPass bool `json:"is_audit_pass"`
 }
 
 func NewDescribeBlogRequest(id string) *DescribeBlogRequest {
@@ -81,6 +100,20 @@ func (r *QueryBlogRequest) Offset() int {
 	return r.PageSize * (r.PageNumber - 1)
 }
 
+func (r *QueryBlogRequest) ParsePageSize(ps string) {
+	psInt, err := strconv.ParseInt(ps, 10, 64)
+	if err != nil && psInt != 0 {
+		r.PageSize = int(psInt)
+	}
+}
+
+func (r *QueryBlogRequest) ParsePageNumber(pn string) {
+	psInt, err := strconv.ParseInt(pn, 10, 64)
+	if err != nil && psInt != 0 {
+		r.PageNumber = int(psInt)
+	}
+}
+
 func (r *QueryBlogRequest) SetStatus(s Status) {
 	r.Status = &s
 }
@@ -106,6 +139,8 @@ func NewPutUpdateBlogRequest(id string) *UpdateBlogRequest {
 type UpdateBlogRequest struct {
 	//如果定义一遍文章，使用对象Id，具体的某一篇文章
 	BlogId string `json:"blog_id"`
+	// blog的范围, 不是用户传递进来的, 是api接口层 自动填充
+	Scope *common.Scope `json:"scope"`
 	// 更新方式- 全量更新/部分更新
 	UpdateMode UpdateMode `json:"update_mode"`
 	// 用户更新请求，用户只传了一个标签

@@ -8,7 +8,7 @@ import (
 
 func TestCreateBlog(t *testing.T) {
 	in := blog.NewCreateBlogRequest()
-	in.Title = "Vblog Web Service Api3"
+	in.Title = "Vblog Web Service Api4"
 	in.Content = "Golong "
 	in.Tags["分类"] = "Golang"
 	ins, err := svc.CreateBlog(ctx, in)
