@@ -38,6 +38,15 @@ func (i *blogServiceImpl) QueryBlog(
 	if in.Status != nil {
 		query = query.Where("Status = ?", *in.Status)
 	}
+	if in.Keywords != "" {
+		// 关键字过滤: 模糊匹配,  Golang入门   Golang
+		// ? 占位符 '%Test12%'
+		query = query.Where("title LIKE ?", "%"+in.Keywords+"%")
+	}
+	if len(in.Usernames) > 0 {
+		// gorm 会把 [] --> (xxx,xxx)
+		query = query.Where("create_by IN ?", in.Usernames)
+	}
 
 	// 1. 查询总数量 - 参考 https://arco.design/vue/component/pagination
 	err := query.Count(&set.Total).Error

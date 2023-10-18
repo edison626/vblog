@@ -4,11 +4,11 @@ package user
 type Role int
 
 const (
-	// 创建者，负责写博客的
+	// 创建者，负责写博客的 - 参数值=0
 	ROLE_AUTHOR Role = iota
-	// 审核人员
+	// 审核人员 - 参数值=1
 	ROLE_AUDITOR
-	//管理员
+	//管理员 - 参数值=2
 	ROLE_ADMIN
 )
 

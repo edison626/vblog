@@ -75,6 +75,7 @@ func NewQueryBlogRequest() *QueryBlogRequest {
 	return &QueryBlogRequest{
 		PageSize:   10,
 		PageNumber: 1,
+		Usernames:  []string{},
 	}
 }
 
@@ -89,6 +90,10 @@ type QueryBlogRequest struct {
 	// 0 DRAFT
 	// 1 PUBLISHED
 	Status *Status `json:"status"`
+	// 基于文章标题的关键字搜索
+	Keywords string `json:"keywords"`
+	// 查询属于哪些用户的博客
+	Usernames []string `json:"Usernames"`
 }
 
 // 依赖数据库，根据分页大小，当前页数可以推到处获取元素的开始和结束位置
@@ -98,6 +103,10 @@ type QueryBlogRequest struct {
 // limite (5*2,5)[11,12,13,14,15]
 func (r *QueryBlogRequest) Offset() int {
 	return r.PageSize * (r.PageNumber - 1)
+}
+
+func (r *QueryBlogRequest) AddUsername(usernames ...string) {
+	r.Usernames = append(r.Usernames, usernames...)
 }
 
 func (r *QueryBlogRequest) ParsePageSize(ps string) {

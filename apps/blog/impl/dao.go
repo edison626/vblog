@@ -5,6 +5,7 @@ import (
 
 	"github.com/edison626/vblog/apps/blog"
 	"github.com/edison626/vblog/common"
+	"github.com/edison626/vblog/exception"
 )
 
 func (i *blogServiceImpl) update(ctx context.Context, scope *common.Scope, ins *blog.Blog) error {
@@ -13,12 +14,16 @@ func (i *blogServiceImpl) update(ctx context.Context, scope *common.Scope, ins *
 		Where("id = ?", ins.Id)
 
 	if scope != nil {
-		if scope.UserId != "" {
-			exec = exec.Where("create_by = ?", scope.UserId)
+		if scope.Username != "" {
+			exec = exec.Where("create_by = ?", scope.Username)
 		}
 	}
 
-	return exec.
-		Updates(ins).
-		Error
+	exec = exec.Updates(ins)
+
+	rf := exec.RowsAffected
+	if rf == 0 {
+		return exception.NewNotFound("blog %d not found", ins.Id)
+	}
+	return exec.Error
 }

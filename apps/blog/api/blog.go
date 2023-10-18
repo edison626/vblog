@@ -154,7 +154,7 @@ func (h *apiHandler) UpdateBlog(c *gin.Context) {
 	}
 
 	in.Scope = &common.Scope{
-		UserId: fmt.Sprintf("%d", tk.UserId),
+		Username: tk.UserName,
 	}
 	ins, err := h.svc.UpdateBlog(c.Request.Context(), in)
 	if err != nil {
@@ -173,11 +173,30 @@ func (h *apiHandler) PatchBlog(c *gin.Context) {
 		response.Failed(c, err)
 		return
 	}
+
+	// 优化这部分逻辑
+	tkObj := c.Keys[token.TOKEN_GIN_KEY_NAME]
+	if tkObj == nil {
+		response.Failed(c, exception.NewPermissionDeny("token not found"))
+		return
+	}
+
+	tk, ok := tkObj.(*token.Token)
+	if !ok {
+		response.Failed(c, exception.NewPermissionDeny("token not an *token.Token"))
+		return
+	}
+
+	in.Scope = &common.Scope{
+		Username: tk.UserName,
+	}
+
 	ins, err := h.svc.UpdateBlog(c.Request.Context(), in)
 	if err != nil {
 		response.Failed(c, err)
 		return
 	}
+
 	response.Success(c, ins)
 }
 

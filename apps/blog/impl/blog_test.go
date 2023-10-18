@@ -8,7 +8,7 @@ import (
 
 func TestCreateBlog(t *testing.T) {
 	in := blog.NewCreateBlogRequest()
-	in.Title = "Vblog Web Service Api4"
+	in.Title = "Vblog Web Service Api6"
 	in.Content = "Golong "
 	in.Tags["分类"] = "Golang"
 	ins, err := svc.CreateBlog(ctx, in)
@@ -20,7 +20,8 @@ func TestCreateBlog(t *testing.T) {
 
 func TestQueryBlog(t *testing.T) {
 	in := blog.NewQueryBlogRequest()
-	in.SetStatus(blog.STATUS_PUBLISHED)
+	// SELECT * FROM `blogs` WHERE create_by IN ('admin') LIMIT 10
+	in.AddUsername("张三")
 	set, err := svc.QueryBlog(ctx, in)
 	if err != nil {
 		t.Fatal(err)
@@ -38,7 +39,7 @@ func TestDescribeBlog(t *testing.T) {
 }
 
 func TestUpdateBlogPut(t *testing.T) {
-	in := blog.NewPutUpdateBlogRequest("45")
+	in := blog.NewPutUpdateBlogRequest("59")
 	in.Content = "Golang2"
 	ins, err := svc.UpdateBlog(ctx, in)
 	if err != nil {
@@ -49,7 +50,7 @@ func TestUpdateBlogPut(t *testing.T) {
 
 // 用Merge 覆盖内容 - 有相同的字段就保留，不一样的就覆盖
 func TestUpdateBlogPatch(t *testing.T) {
-	in := blog.NewPutUpdateBlogRequest("45")
+	in := blog.NewPutUpdateBlogRequest("59")
 	in.Title = "Vblog Web Service Api23"
 	in.Tags["分类"] = "Golang3"
 	ins, err := svc.UpdateBlog(ctx, in)

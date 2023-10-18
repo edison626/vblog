@@ -16,10 +16,23 @@ var (
 	ctx     = context.Background()
 )
 
-func TestCreateUser(t *testing.T) {
+func TestCreateAuth1(t *testing.T) {
 	req := user.NewCreateUserRequest()
-	req.Username = "admin3"
+	req.Username = "admin"
 	req.Password = "123456"
+	req.Role = user.ROLE_AUTHOR
+	u, err := userSvc.CreateUser(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(u)
+}
+
+func TestCreateAuthor2(t *testing.T) {
+	req := user.NewCreateUserRequest()
+	req.Username = "张三"
+	req.Password = "123456"
+	req.Role = user.ROLE_AUTHOR
 	u, err := userSvc.CreateUser(ctx, req)
 	if err != nil {
 		t.Fatal(err)
