@@ -1,8 +1,6 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/edison626/vblog/apps/blog"
 	"github.com/edison626/vblog/apps/token"
 	"github.com/edison626/vblog/apps/user"
@@ -94,11 +92,12 @@ func (h *apiHandler) CreateBlog(c *gin.Context) {
 }
 
 // 列表查询
+// GET /vblog/api/v1/blogs/?page_size=1&page_number=20
 func (h *apiHandler) QueryBlog(c *gin.Context) {
 
 	// 从GIN 请求上下文中： c.keys，获取哦去认证的鉴全结果
-	tkObj := c.Keys[token.TOKEN_GIN_KEY_NAME]
-	fmt.Println(tkObj.(*token.Token).UserId)
+	// tkObj := c.Keys[token.TOKEN_GIN_KEY_NAME]
+	// fmt.Println(tkObj.(*token.Token).UserId)
 
 	in := blog.NewQueryBlogRequest()
 	in.ParsePageSize(c.Query("page_size"))

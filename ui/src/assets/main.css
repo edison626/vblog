@@ -1,0 +1,16 @@
+@import './base.css';
+
+#app {
+  font-weight: normal;
+}
+
+.page {
+  padding: 8px 12px;
+  height: 100%;
+  width: 100%;
+}
+
+.arco-pagination {
+  height: 40px;
+  justify-content:end;
+}

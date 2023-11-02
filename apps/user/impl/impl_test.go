@@ -18,7 +18,7 @@ var (
 
 func TestCreateAuth1(t *testing.T) {
 	req := user.NewCreateUserRequest()
-	req.Username = "admin"
+	req.Username = "admin4"
 	req.Password = "123456"
 	req.Role = user.ROLE_AUTHOR
 	u, err := userSvc.CreateUser(ctx, req)
@@ -69,7 +69,7 @@ func TestDeleteUser(t *testing.T) {
 // 测试查询 - name 查询
 // SELECT * FROM `users` WHERE username = 'admin' ORDER BY `users`.`id` LIMIT 1
 func TestDescribeUserRequestByName(t *testing.T) {
-	req := user.NewDescribeUserRequestByUsername("admin1")
+	req := user.NewDescribeUserRequestByUsername("admin4")
 	ins, err := userSvc.DescribeUserRequest(ctx, req)
 	if err != nil {
 		t.Fatal(err)

@@ -2,6 +2,7 @@ package blog
 
 import (
 	"context"
+	"encoding/json"
 	"strconv"
 
 	"github.com/edison626/vblog/common"
@@ -66,6 +67,11 @@ type BlogSet struct {
 	Items []*Blog `json:"items"`
 }
 
+func (b *BlogSet) String() string {
+	dj, _ := json.Marshal(b)
+	return string(dj)
+}
+
 func (s *BlogSet) Add(items ...*Blog) {
 	s.Items = append(s.Items, items...)
 }
@@ -110,15 +116,17 @@ func (r *QueryBlogRequest) AddUsername(usernames ...string) {
 }
 
 func (r *QueryBlogRequest) ParsePageSize(ps string) {
-	psInt, err := strconv.ParseInt(ps, 10, 64)
-	if err != nil && psInt != 0 {
+	psInt, _ := strconv.ParseInt(ps, 10, 64)
+	//if err != nil && psInt != 0 {
+	if psInt != 0 {
 		r.PageSize = int(psInt)
 	}
 }
 
 func (r *QueryBlogRequest) ParsePageNumber(pn string) {
-	psInt, err := strconv.ParseInt(pn, 10, 64)
-	if err != nil && psInt != 0 {
+	psInt, _ := strconv.ParseInt(pn, 10, 64)
+	//if err != nil && psInt != 0 {
+	if psInt != 0 {
 		r.PageNumber = int(psInt)
 	}
 }

@@ -7,10 +7,17 @@ import (
 
 // New(5000, "令牌过期...")
 func New(code int, format string, a ...any) *ApiException {
+	HttpCode := http.StatusInternalServerError
+	// 0 ~ 5xx
+	if code/100 < 6 && code/100 > 0 {
+		HttpCode = code
+	}
+
 	return &ApiException{
-		BizCode:  code,
-		Message:  fmt.Sprintf(format, a...),
-		HttpCode: http.StatusOK,
+		BizCode: code,
+		Message: fmt.Sprintf(format, a...),
+		// 如果是异样，直接使用http code作为异常， 不是使用200
+		HttpCode: HttpCode,
 	}
 }
 
