@@ -51,23 +51,36 @@
   
   
 <script setup>
-    import { onBeforeMount, ref } from 'vue'
+    import { onBeforeMount, ref , reactive } from 'vue'
     import { LIST_BLOG } from '../../../api/blog'
+    
+    import dayjs from 'dayjs'
 
     const blogs = ref ([{total:0, items:[]}])
     const queryLoading = ref(false)
+    const queryParams = reactive({
+        page_size: 10 ,
+        page_number:1,
+    })
     const queryBlogs = async () => {
+        queryLoading.value = true
         try {
-            const resp = await LIST_BLOG()
+            const resp = await LIST_BLOG(queryParams)
             blogs.value = resp
         }finally {
             queryLoading.value = false
         }
+    }
 
-        
+    const onPageSizeChange =  (pageSize) => {
+        queryParams.page_size = pageSize
+        queryParams.page_number = 1
+        queryBlogs()
+    }
 
-        // const resp = await LIST_BLOG()
-        // console.log(resp)
+    const onPageNumberChange = (pageNumber) => {
+        queryParams.page_number = pageNumber
+        queryBlogs()
     }
 
     // 页面渲染之前，需要把数据提前准备好

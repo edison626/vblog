@@ -22,6 +22,7 @@ func TestQueryBlog(t *testing.T) {
 	in := blog.NewQueryBlogRequest()
 	// SELECT * FROM `blogs` WHERE create_by IN ('admin') LIMIT 10
 	in.AddUsername("张三")
+	in.PageSize = 2
 	set, err := svc.QueryBlog(ctx, in)
 	if err != nil {
 		t.Fatal(err)

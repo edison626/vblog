@@ -2,7 +2,10 @@
     <div class="login-page">
         <div class="login-form">
             <a-form-item hide-label >
-                <span class="login-title"> 欢迎登陆博客系统 </span>
+                    <a-image class="login-title" width="100" src="https://dl.sadslj88.com/yq-vn/web/images/cg-template-2/white-blue/yq/webp/home_logo.png.webp" />
+            </a-form-item>
+            <a-form-item hide-label >
+                <span class="login-title"> 博客系统 </span>
             </a-form-item>
             <a-form :model="loginForm"  @submit="handleSubmit">
                 <!-- 定义里面哪个字段 -->
@@ -11,7 +14,7 @@
                         <template #prefix>
                             <icon-user />
                         </template>
-                    </a-input> 
+                    </a-input>
                 </a-form-item>
                 <a-form-item hide-label field="password" :rules="[
                     {required:true,message:'请输入密码'},
@@ -60,7 +63,7 @@ const handleSubmit = async (data) => {
 
         //保留登陆状态
         state.value.is_login = true;
-        state.value.token = resp.data
+        state.value.token = resp
 
         // 需要进行跳转， vue router 的 Router 对象
         // 通过vue router 库来获取一个router对象
@@ -71,6 +74,9 @@ const handleSubmit = async (data) => {
         console.log(error);
     }
 }
+
+
+
 </script>
 
 <style lang="css" scoped>
@@ -97,4 +103,6 @@ const handleSubmit = async (data) => {
     width: 100%;
     justify-content: center;
 }
+
+
 </style>

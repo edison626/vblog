@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/edison626/vblog/apps/blog"
 	"github.com/edison626/vblog/apps/token"
 	"github.com/edison626/vblog/apps/user"
@@ -15,7 +17,7 @@ import (
 // 可以选择把这个Handler上的HandleFunc都注册到路由上面
 func (h *apiHandler) Registry(r gin.IRouter) {
 	// r 是Gin的路由器
-	v1 := r.Group("v1").GET("blogs")
+	v1 := r.Group("v1").Group("blogs")
 	// 需要公开给访客访问 可以不用鉴权
 	// GET /vblog/api/v1/blogs/
 	v1.GET("/", h.QueryBlog)
@@ -95,13 +97,10 @@ func (h *apiHandler) CreateBlog(c *gin.Context) {
 // GET /vblog/api/v1/blogs/?page_size=1&page_number=20
 func (h *apiHandler) QueryBlog(c *gin.Context) {
 
-	// 从GIN 请求上下文中： c.keys，获取哦去认证的鉴全结果
-	// tkObj := c.Keys[token.TOKEN_GIN_KEY_NAME]
-	// fmt.Println(tkObj.(*token.Token).UserId)
-
 	in := blog.NewQueryBlogRequest()
 	in.ParsePageSize(c.Query("page_size"))
-	in.ParsePageSize(c.Query("page_number"))
+	in.ParsePageNumber(c.Query("page_number"))
+	fmt.Println(in)
 	switch c.Query("status") {
 	case "draft":
 		in.SetStatus(blog.STATUS_DRAFT)

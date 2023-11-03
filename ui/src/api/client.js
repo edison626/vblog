@@ -15,7 +15,7 @@ var instance = axios.create({
 // 通过响应拦截器统一处理异常
 instance.interceptors.response.use(
     (resp) => {
-        return resp
+        return resp.data
     },
     (error) => {
         //const router = useRouter()

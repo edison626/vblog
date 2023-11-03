@@ -12,7 +12,10 @@
   "dependencies": {
     "@vueuse/core": "^10.5.0",
     "axios": "^1.6.0",
+    "particles.js": "^2.0.0",
+    "particles.vue3": "^2.12.0",
     "pinia": "^2.1.7",
+    "tsparticles": "^2.12.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
@@ -22,7 +25,6 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "@vue/eslint-config-prettier": "^8.0.0",
     "eslint": "^8.49.0",
-    "eslint-plugin-vue": "^9.17.0",
     "prettier": "^3.0.3",
     "vite": "^4.4.11"
   }

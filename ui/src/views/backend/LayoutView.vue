@@ -39,21 +39,21 @@
 <script setup>
 import TopBar from '../../components/TopBar.vue'
 import { useRouter } from 'vue-router'
-// import { ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 
-// 默认展开
-// const collapsed = ref(true)
-// const onCollapse = (v) => {
-//   collapsed.value = v
-// }
-// 根据状态计算内容区域的宽度
-// const contentWidth = computed(()=> {
-//   if (collapsed.value) {
-//     return 'calc(100vw - 48px)'
-//   } else {
-//     return "calc(100vw - 220px)"
-//   }
-// })
+//默认展开
+const collapsed = ref(true)
+const onCollapse = (v) => {
+  collapsed.value = v
+}
+//根据状态计算内容区域的宽度
+const contentWidth = computed(()=> {
+  if (collapsed.value) {
+    return 'calc(100vw - 48px)'
+  } else {
+    return "calc(100vw - 220px)"
+  }
+})
 
 
 const router = useRouter();

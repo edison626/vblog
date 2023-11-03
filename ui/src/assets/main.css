@@ -1,5 +1,7 @@
 @import './base.css';
 
+/* 覆盖默认的css 可以在这里添加 */
+
 #app {
   font-weight: normal;
 }
@@ -13,4 +15,10 @@
 .arco-pagination {
   height: 40px;
   justify-content:end;
+}
+
+.arco-form-item-content-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
